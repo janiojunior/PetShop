@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>Cadastro de Usuário</title>
+</h:head>
+<h:body>
+	<h1>Cadastro de Usuário</h1>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="CPF: " />
+			<h:inputText value="#{usuarioController.usuario.cpf}" />
+			
+			<h:outputLabel value="Nome: " />
+			<h:inputText value="#{usuarioController.usuario.nome}" />
+			
+			<h:outputLabel value="Email: " />
+			<h:inputText value="#{usuarioController.usuario.email}" />
+			
+			<h:outputLabel value="Login: " />
+			<h:inputText value="#{usuarioController.usuario.login}" />
+			
+			<h:outputLabel value="Senha: " />
+			<h:inputText value="#{usuarioController.usuario.senha}" />
+	
+			<h:commandButton value="Incluir" 
+				actionListener="#{usuarioController.incluir}"  />
+				
+			<h:commandButton value="Limpar" 
+				actionListener="#{usuarioController.limpar}"  />
+		</h:panelGrid>
+	</h:form>
+	
+	<h:dataTable 
+		value="#{usuarioController.listaUsuario}"
+		var="obj">
+		<h:column>
+			<f:facet name="header">CPF</f:facet>
+			<h:outputLabel value="#{obj.cpf}" />
+			
+		</h:column>
+		<h:column>
+			<f:facet name="header">Nome</f:facet>
+			<h:outputLabel value="#{obj.nome}" />
+		</h:column>		
+		<h:column>
+			<f:facet name="header">E-mail</f:facet>
+			<h:outputLabel value="#{obj.email}" />
+		</h:column>		
+		<h:column>
+			<f:facet name="header">Login</f:facet>
+			<h:outputLabel value="#{obj.login}" />
+		</h:column>		
+		<h:column>
+			<f:facet name="header">Senha</f:facet>
+			<h:outputLabel value="#{obj.senha}" />
+		</h:column>		
+	
+	</h:dataTable>
+	
+</h:body>
+</html>
