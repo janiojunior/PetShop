@@ -23,9 +23,24 @@ public class UsuarioController implements Serializable {
 		limpar();
 	}
 	
+	public void alterar() {
+
+	}
+	
+	public void excluir() {
+
+	}
+	
+//	public void
+	
 	public void limpar() {
 		System.out.println("Limpar");
 		setUsuario(null);
+	}
+	
+	public void editar(Usuario usu) {
+		System.out.println("Entrou no editar");
+		setUsuario(usu);
 	}
 	
 	public List<Usuario> getListaUsuario() {

@@ -24,40 +24,54 @@
 			<h:outputLabel value="Senha: " />
 			<h:inputText value="#{usuarioController.usuario.senha}" />
 	
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4">
 			<h:commandButton value="Incluir" 
 				actionListener="#{usuarioController.incluir}"  />
 				
+			<h:commandButton value="Alterar" 
+				actionListener="#{usuarioController.alterar}"  />
+				
+			<h:commandButton value="Excluir" 
+				actionListener="#{usuarioController.excluir}"  />
+				
 			<h:commandButton value="Limpar" 
 				actionListener="#{usuarioController.limpar}"  />
+		
 		</h:panelGrid>
+		
+		<h:dataTable 
+			value="#{usuarioController.listaUsuario}"
+			var="obj">
+			<h:column>
+				<f:facet name="header">CPF</f:facet>
+				<h:outputLabel value="#{obj.cpf}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputLabel value="#{obj.nome}" />
+			</h:column>		
+			<h:column>
+				<f:facet name="header">E-mail</f:facet>
+				<h:outputLabel value="#{obj.email}" />
+			</h:column>		
+			<h:column>
+				<f:facet name="header">Login</f:facet>
+				<h:outputLabel value="#{obj.login}" />
+			</h:column>		
+			<h:column>
+				<f:facet name="header">Senha</f:facet>
+				<h:outputLabel value="#{obj.senha}" />
+			</h:column>		
+			<h:column>
+				<f:facet name="header">Ação</f:facet>
+				<h:commandButton value="Editar"
+					actionListener="#{usuarioController.editar(obj)}"/>
+			</h:column>	
+		
+		</h:dataTable>
+		
 	</h:form>
-	
-	<h:dataTable 
-		value="#{usuarioController.listaUsuario}"
-		var="obj">
-		<h:column>
-			<f:facet name="header">CPF</f:facet>
-			<h:outputLabel value="#{obj.cpf}" />
-			
-		</h:column>
-		<h:column>
-			<f:facet name="header">Nome</f:facet>
-			<h:outputLabel value="#{obj.nome}" />
-		</h:column>		
-		<h:column>
-			<f:facet name="header">E-mail</f:facet>
-			<h:outputLabel value="#{obj.email}" />
-		</h:column>		
-		<h:column>
-			<f:facet name="header">Login</f:facet>
-			<h:outputLabel value="#{obj.login}" />
-		</h:column>		
-		<h:column>
-			<f:facet name="header">Senha</f:facet>
-			<h:outputLabel value="#{obj.senha}" />
-		</h:column>		
-	
-	</h:dataTable>
-	
 </h:body>
 </html>
