@@ -7,6 +7,7 @@
 </h:head>
 <h:body>
 	<h1>Cadastro de Usuário</h1>
+	<h:messages style="color:red;margin:8px;" />
 	<h:form>
 		<h:panelGrid columns="2">
 			<h:outputLabel value="CPF: " />
@@ -22,18 +23,24 @@
 			<h:inputText value="#{usuarioController.usuario.login}" />
 			
 			<h:outputLabel value="Senha: " />
-			<h:inputText value="#{usuarioController.usuario.senha}" />
+			<h:inputSecret value="#{usuarioController.usuario.senha}" />
+			
+			<h:outputLabel value="Confirmar Senha: " />
+			<h:inputSecret value="#{usuarioController.confirmarSenha}" />
 	
 		</h:panelGrid>
 		
 		<h:panelGrid columns="4">
 			<h:commandButton value="Incluir" 
+				disabled="#{usuarioController.usuario.id != null}"
 				actionListener="#{usuarioController.incluir}"  />
 				
 			<h:commandButton value="Alterar" 
+				disabled="#{usuarioController.usuario.id == null}"
 				actionListener="#{usuarioController.alterar}"  />
 				
 			<h:commandButton value="Excluir" 
+				disabled="#{usuarioController.usuario.id == null}"
 				actionListener="#{usuarioController.excluir}"  />
 				
 			<h:commandButton value="Limpar" 
@@ -44,6 +51,10 @@
 		<h:dataTable 
 			value="#{usuarioController.listaUsuario}"
 			var="obj">
+			<h:column>
+				<f:facet name="header">Id</f:facet>
+				<h:outputLabel value="#{obj.id}" />
+			</h:column>
 			<h:column>
 				<f:facet name="header">CPF</f:facet>
 				<h:outputLabel value="#{obj.cpf}" />
@@ -68,6 +79,8 @@
 				<f:facet name="header">Ação</f:facet>
 				<h:commandButton value="Editar"
 					actionListener="#{usuarioController.editar(obj)}"/>
+				<h:commandButton value="Excluir"
+					actionListener="#{usuarioController.excluir(obj)}"/>
 			</h:column>	
 		
 		</h:dataTable>
