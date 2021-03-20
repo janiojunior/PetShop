@@ -4,22 +4,28 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.petshop.model.Perfil;
 import br.unitins.petshop.model.Usuario;
 
 @Named
 @ViewScoped
-public class UsuarioController implements Serializable {
+public class UsuarioController implements Serializable{
 	
-	private static final long serialVersionUID = 2493996165087568884L;
+	private static final long serialVersionUID = 1304667158255601678L;
 	private Usuario usuario = null;
 	private String confirmarSenha;
 	private List<Usuario> listaUsuario;
 	private int cont = 0;
+	
+	public Perfil[] getListaPerfil() {
+		return Perfil.values();
+	}
 	
 	private boolean verificaSenha() {
 		if (getUsuario().getSenha().equals(getConfirmarSenha())) {

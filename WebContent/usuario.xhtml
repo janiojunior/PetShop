@@ -11,19 +11,38 @@
 	<h:form>
 		<h:panelGrid columns="2">
 			<h:outputLabel value="CPF: " />
-			<h:inputText value="#{usuarioController.usuario.cpf}" />
+			<h:inputText value="#{usuarioController.usuario.cpf}" 
+				validatorMessage="O cpf deve seguir o seguinte padrão: ex.: 999.999.999-99">
+				<f:validateRegex 
+					pattern="[0-9]{3}[.][0-9]{3}[.][0-9]{3}[-][0-9]{2}"/>
+				<f:validateLength minimum="3"/>
+			</h:inputText>
 			
 			<h:outputLabel value="Nome: " />
-			<h:inputText value="#{usuarioController.usuario.nome}" />
+			<h:inputText value="#{usuarioController.usuario.nome}"
+				 validatorMessage="O nome tem que possuir mais de 6 caracteres."
+				 required="true" requiredMessage="O nome deve ser preenchido.">
+				<f:validateLength minimum="6" />
+			</h:inputText>
 			
 			<h:outputLabel value="Email: " />
 			<h:inputText value="#{usuarioController.usuario.email}" />
+			
+			<h:outputLabel value="Perfil: " />
+			<h:selectOneMenu value="#{usuarioController.usuario.perfil}">
+				<f:selectItems value="#{usuarioController.listaPerfil}"
+							   var="obj" 
+							   itemLabel="#{obj.label}"/>
+			</h:selectOneMenu>
 			
 			<h:outputLabel value="Login: " />
 			<h:inputText value="#{usuarioController.usuario.login}" />
 			
 			<h:outputLabel value="Senha: " />
-			<h:inputSecret value="#{usuarioController.usuario.senha}" />
+			<h:inputSecret id="isSenha" value="#{usuarioController.usuario.senha}" 
+						required="true"
+						requiredMessage="A senha deve ser informada.">
+			</h:inputSecret>
 			
 			<h:outputLabel value="Confirmar Senha: " />
 			<h:inputSecret value="#{usuarioController.confirmarSenha}" />
@@ -38,16 +57,21 @@
 			<h:commandButton value="Alterar" 
 				disabled="#{usuarioController.usuario.id == null}"
 				actionListener="#{usuarioController.alterar}"  />
-				
+		</h:panelGrid>
+	</h:form>	
+	<h:form>	
+		<h:panelGrid columns="2">
 			<h:commandButton value="Excluir" 
 				disabled="#{usuarioController.usuario.id == null}"
 				actionListener="#{usuarioController.excluir}"  />
 				
 			<h:commandButton value="Limpar" 
 				actionListener="#{usuarioController.limpar}"  />
-		
 		</h:panelGrid>
-		
+	</h:form>
+
+	
+	<h:form>
 		<h:dataTable 
 			value="#{usuarioController.listaUsuario}"
 			var="obj">
@@ -67,6 +91,10 @@
 				<f:facet name="header">E-mail</f:facet>
 				<h:outputLabel value="#{obj.email}" />
 			</h:column>		
+			<h:column>
+				<f:facet name="header">Perfil</f:facet>
+				<h:outputLabel value="#{obj.perfil.label}" />
+			</h:column>	
 			<h:column>
 				<f:facet name="header">Login</f:facet>
 				<h:outputLabel value="#{obj.login}" />
