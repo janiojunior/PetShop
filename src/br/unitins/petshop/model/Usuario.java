@@ -1,11 +1,27 @@
 package br.unitins.petshop.model;
 
+import java.time.LocalDate;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+
 public class Usuario implements Cloneable {
 
 	private Integer id;
 	private String cpf;
 	private String nome;
+	
+	@Past(message = "A data deve estar no passado.")
+	private LocalDate dataNascimento;
+	
+	@Email(message = "Informe um email válido.")
+	@NotNull(message = "O email não pode ser nulo.")
+	@NotEmpty(message = "O email deve ser preenchido.")
 	private String email;
+	
 	private String login;
 	private String senha;
 	private Perfil perfil;
@@ -64,6 +80,14 @@ public class Usuario implements Cloneable {
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
+	}
+	
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	@Override

@@ -28,6 +28,12 @@
 			<h:outputLabel value="Email: " />
 			<h:inputText value="#{usuarioController.usuario.email}" />
 			
+			<h:outputLabel value="Data de Nascimento: " />
+			<h:inputText value="#{usuarioController.usuario.dataNascimento}"
+				converterMessage="A data deve serguir o seguinte formato: Ex.: 20/10/2000">
+				<f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+			</h:inputText>			
+			
 			<h:outputLabel value="Perfil: " />
 			<h:selectOneMenu value="#{usuarioController.usuario.perfil}">
 				<f:selectItems value="#{usuarioController.listaPerfil}"
@@ -90,6 +96,12 @@
 			<h:column>
 				<f:facet name="header">E-mail</f:facet>
 				<h:outputLabel value="#{obj.email}" />
+			</h:column>	
+			<h:column>
+				<f:facet name="header">Data de Nascimento</f:facet>
+				<h:outputLabel value="#{obj.dataNascimento}">
+					<f:convertDateTime type="localDate" pattern="dd-MM-yy"/>
+				</h:outputLabel>
 			</h:column>		
 			<h:column>
 				<f:facet name="header">Perfil</f:facet>

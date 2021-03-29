@@ -8,5 +8,27 @@
 </h:head>
 <h:body>
 	<h1>Hello, World.</h1>
+	<h:form>
+		<h:outputLabel value="Teste Ajax:"/>
+		<h:inputText id="itTesteAjax" value="#{helloController.testeAjax}">
+			<f:ajax event="mouseover" 
+					execute="@this" 
+					render="olTeste1"
+					listener="#{helloController.enviar}"/>
+		</h:inputText>
+		<br/>
+		<h:commandButton value="Enviar" 
+					actionListener="#{helloController.enviar}">
+			<f:ajax execute="@all" render="@all"/>
+		</h:commandButton>
+	</h:form>
+		<h:inputText id="itTesteAjax2" value="#{helloController.testeAjax2}"/>
+		<h:outputLabel id="olTeste3" value="Label 03: #{helloController.testeAjax2}"/>
+		<h:panelGroup id="panelGroup">
+			<br/>
+			<h:outputLabel id="olTeste1" value="Label 01: #{helloController.testeAjax}"/>
+			<br/>
+			<h:outputLabel id="olTeste2" value="Label 02: #{helloController.testeAjax}"/>
+		</h:panelGroup>
 </h:body>
 </html>
