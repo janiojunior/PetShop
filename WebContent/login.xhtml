@@ -8,6 +8,11 @@
 <h:body>
 	<h1>Login</h1>
 	<h:form>
+		<h:messages id="messages" 
+				globalOnly="false"
+				errorStyle="color:red;margin:8px;"
+				infoStyle="color:green;margin:8px;"
+				warnStyle="color:yellow;margin:8px;" />
 		<h:panelGrid columns="2">
 			<h:outputLabel value="Usuário: " />
 			<h:inputText value="#{loginController.usuario}" />
@@ -15,10 +20,10 @@
 			<h:inputText value="#{loginController.senha}" />
 	
 			<h:commandButton value="Entrar" 
-				actionListener="#{loginController.entrar}"  />
+				action="#{loginController.entrar}"  />
 				
 			<h:commandButton value="Limpar" 
-				actionListener="#{loginController.limpar}"  />
+				action="usuario.xhtml?faces-redirect=true"  />
 		</h:panelGrid>
 	</h:form>
 </h:body>

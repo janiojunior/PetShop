@@ -4,17 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.petshop.application.Util;
 import br.unitins.petshop.model.Perfil;
 import br.unitins.petshop.model.Usuario;
 
 @Named
-@ViewScoped
+@ApplicationScoped
 public class UsuarioController implements Serializable{
 	
 	private static final long serialVersionUID = 1304667158255601678L;
@@ -22,22 +23,35 @@ public class UsuarioController implements Serializable{
 	private String confirmarSenha;
 	private List<Usuario> listaUsuario;
 	private int cont = 0;
+	private UIComponent uicCpf;
 	
+	public UIComponent getUicCpf() {
+		return uicCpf;
+	}
+
+	public void setUicCpf(UIComponent uicCpf) {
+		this.uicCpf = uicCpf;
+	}
+
 	public Perfil[] getListaPerfil() {
 		return Perfil.values();
+	}
+	
+	public void validarCpf() {
+		if (getUsuario().getCpf().equals("111.111.111-11")) {
+			Util.addErrorMessage("O cpf: 111.111.111-11 é inválido.", uicCpf.getClientId());
+			;
+		}
 	}
 	
 	private boolean verificaSenha() {
 		if (getUsuario().getSenha().equals(getConfirmarSenha())) {
 			return true;
 		}
-		FacesContext.getCurrentInstance().
-		addMessage(null, 
-			new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-					"As senhas estão diferentes.", null));
+		Util.addErrorMessage("As senhas estão diferentes.");
 		return false;
 	}
-	
+
 	public void incluir() {
 		System.out.println("Incluir");
 		if (verificaSenha()) {
@@ -46,24 +60,19 @@ public class UsuarioController implements Serializable{
 			limpar();
 			
 			// envio de mensagem para a interface 
-			FacesContext.getCurrentInstance().
-			addMessage(null, 
-				new FacesMessage(FacesMessage.SEVERITY_INFO, 
-						"Inclusão realizada com sucesso", null));
+			Util.addInfoMessage("Inclusão realizada com sucesso");
 		} 
 	}
 	
 	public void alterar() {
+		System.out.println("Alterar");
 		if (verificaSenha()) {
 			int index = listaUsuario.indexOf(getUsuario());
 			listaUsuario.set(index, getUsuario());
 			limpar();
 			
 			// envio de mensagem para a interface 
-			FacesContext.getCurrentInstance().
-			addMessage(null, 
-				new FacesMessage(FacesMessage.SEVERITY_INFO, 
-						"Alteração realizada com sucesso", null));
+			Util.addInfoMessage("Alteração realizada com sucesso");
 		}
 		
 //		for (int index = 0; index < listaUsuario.size(); index++) {
@@ -82,13 +91,11 @@ public class UsuarioController implements Serializable{
 		excluir(getUsuario());
 		limpar();
 		// envio de mensagem para a interface 
-		FacesContext.getCurrentInstance().
-		addMessage(null, 
-			new FacesMessage(FacesMessage.SEVERITY_INFO, 
-					"Exclusão realizada com sucesso", null));
+		Util.addInfoMessage("Exclusão realizada com sucesso");
 	}
 	
 	public void excluir(Usuario usu) {
+		System.out.println("Excluir");
 		listaUsuario.remove(usu);
 		System.out.println("Foi excluido o usuario do id: " + usu.getId());
 	}
@@ -99,6 +106,7 @@ public class UsuarioController implements Serializable{
 	}
 	
 	public void editar(Usuario usu) {
+		System.out.println("Editar");
 		setUsuario(usu.getClone());
 	}
 	

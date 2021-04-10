@@ -6,11 +6,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 
 
 public class Usuario implements Cloneable {
 
 	private Integer id;
+	@Pattern(regexp = "[0-9]{3}[.][0-9]{3}[.][0-9]{3}[-][0-9]{2}", message = "O cpf deve seguir o seguinte padrão: ex.: 999.999.999-99")
 	private String cpf;
 	private String nome;
 	

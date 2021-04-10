@@ -7,16 +7,27 @@
 </h:head>
 <h:body>
 	<h1>Cadastro de Usuário</h1>
-	<h:messages style="color:red;margin:8px;" />
-	<h:form>
-		<h:panelGrid columns="2">
+	<h:form id="form1">
+		<h:messages id="messages" 
+					globalOnly="false"
+					errorStyle="color:red;margin:8px;"
+					infoStyle="color:green;margin:8px;"
+					warnStyle="color:yellow;margin:8px;" />
+		<h:panelGrid id="pgPrincipal" columns="2">
+		
 			<h:outputLabel value="CPF: " />
-			<h:inputText value="#{usuarioController.usuario.cpf}" 
-				validatorMessage="O cpf deve seguir o seguinte padrão: ex.: 999.999.999-99">
-				<f:validateRegex 
-					pattern="[0-9]{3}[.][0-9]{3}[.][0-9]{3}[-][0-9]{2}"/>
-				<f:validateLength minimum="3"/>
-			</h:inputText>
+			<h:panelGroup id="pgCpf">
+				<h:inputText id="itCpf" 
+							 binding="#{usuarioController.uicCpf}"
+							 value="#{usuarioController.usuario.cpf}" >
+					<f:ajax	event="blur" 
+							execute="@form"
+							render="@form"
+							listener="#{usuarioController.validarCpf}"
+							/>
+				</h:inputText>
+				<h:message for="itCpf" style="color:red;margin:8px;"/>
+			</h:panelGroup>
 			
 			<h:outputLabel value="Nome: " />
 			<h:inputText value="#{usuarioController.usuario.nome}"
@@ -55,76 +66,84 @@
 	
 		</h:panelGrid>
 		
-		<h:panelGrid columns="4">
+		<h:panelGrid id="pgBotoes" columns="4">
 			<h:commandButton value="Incluir" 
 				disabled="#{usuarioController.usuario.id != null}"
-				actionListener="#{usuarioController.incluir}"  />
+				actionListener="#{usuarioController.incluir}">
+				<f:ajax execute="@this pgPrincipal" render="@form" />
+			</h:commandButton>
 				
 			<h:commandButton value="Alterar" 
 				disabled="#{usuarioController.usuario.id == null}"
-				actionListener="#{usuarioController.alterar}"  />
-		</h:panelGrid>
-	</h:form>	
-	<h:form>	
-		<h:panelGrid columns="2">
+				actionListener="#{usuarioController.alterar}"  >
+				<f:ajax execute="@this pgPrincipal" render="@form" />
+			</h:commandButton>
+
 			<h:commandButton value="Excluir" 
 				disabled="#{usuarioController.usuario.id == null}"
-				actionListener="#{usuarioController.excluir}"  />
+				actionListener="#{usuarioController.excluir}" >
+				<f:ajax execute="@this" render="@form" />
+			</h:commandButton>
 				
 			<h:commandButton value="Limpar" 
-				actionListener="#{usuarioController.limpar}"  />
+				actionListener="#{usuarioController.limpar}">
+				<f:ajax execute="@this" render="pgPrincipal messages pgBotoes" />
+			</h:commandButton>
 		</h:panelGrid>
-	</h:form>
-
-	
-	<h:form>
-		<h:dataTable 
-			value="#{usuarioController.listaUsuario}"
-			var="obj">
-			<h:column>
-				<f:facet name="header">Id</f:facet>
-				<h:outputLabel value="#{obj.id}" />
-			</h:column>
-			<h:column>
-				<f:facet name="header">CPF</f:facet>
-				<h:outputLabel value="#{obj.cpf}" />
-			</h:column>
-			<h:column>
-				<f:facet name="header">Nome</f:facet>
-				<h:outputLabel value="#{obj.nome}" />
-			</h:column>		
-			<h:column>
-				<f:facet name="header">E-mail</f:facet>
-				<h:outputLabel value="#{obj.email}" />
-			</h:column>	
-			<h:column>
-				<f:facet name="header">Data de Nascimento</f:facet>
-				<h:outputLabel value="#{obj.dataNascimento}">
-					<f:convertDateTime type="localDate" pattern="dd-MM-yy"/>
-				</h:outputLabel>
-			</h:column>		
-			<h:column>
-				<f:facet name="header">Perfil</f:facet>
-				<h:outputLabel value="#{obj.perfil.label}" />
-			</h:column>	
-			<h:column>
-				<f:facet name="header">Login</f:facet>
-				<h:outputLabel value="#{obj.login}" />
-			</h:column>		
-			<h:column>
-				<f:facet name="header">Senha</f:facet>
-				<h:outputLabel value="#{obj.senha}" />
-			</h:column>		
-			<h:column>
-				<f:facet name="header">Ação</f:facet>
-				<h:commandButton value="Editar"
-					actionListener="#{usuarioController.editar(obj)}"/>
-				<h:commandButton value="Excluir"
-					actionListener="#{usuarioController.excluir(obj)}"/>
-			</h:column>	
 		
-		</h:dataTable>
-		
+		<h:panelGroup id="pgDataTable">
+			<h:dataTable 
+				id="dataTable"
+				value="#{usuarioController.listaUsuario}"
+				var="obj">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					<h:outputLabel value="#{obj.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">CPF</f:facet>
+					<h:outputLabel value="#{obj.cpf}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputLabel value="#{obj.nome}" />
+				</h:column>		
+				<h:column>
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputLabel value="#{obj.email}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Data de Nascimento</f:facet>
+					<h:outputLabel value="#{obj.dataNascimento}">
+						<f:convertDateTime type="localDate" pattern="dd-MM-yy"/>
+					</h:outputLabel>
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Perfil</f:facet>
+					<h:outputLabel value="#{obj.perfil.label}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Login</f:facet>
+					<h:outputLabel value="#{obj.login}" />
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Senha</f:facet>
+					<h:outputLabel value="#{obj.senha}" />
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Ação</f:facet>
+					<h:commandButton value="Editar"
+						actionListener="#{usuarioController.editar(obj)}">
+						<f:ajax execute="@this" render="@form"/>
+					</h:commandButton>
+					<h:commandButton value="Excluir"
+						actionListener="#{usuarioController.excluir(obj)}">
+						<f:ajax execute="@this" render="@form:pgDataTable"/>
+					</h:commandButton>
+				</h:column>	
+			
+			</h:dataTable>
+		</h:panelGroup>
 	</h:form>
 </h:body>
 </html>
