@@ -1,15 +1,17 @@
 package br.unitins.petshop.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.unitins.petshop.model.Perfil;
 import br.unitins.petshop.model.Usuario;
 
-public class UsuarioDAO implements DAO {
+public class UsuarioDAO implements DAO<Usuario> {
 
 	@Override
 	public boolean inserir(Usuario obj) {
@@ -18,17 +20,27 @@ public class UsuarioDAO implements DAO {
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO usuario ");
-		sql.append(" (cpf, nome, login, senha) ");
+		sql.append(" (cpf, nome, email, data_nascimento, login, senha, perfil) ");
 		sql.append("VALUES ");
-		sql.append(" (?, ?, ?, ? ) ");
+		sql.append(" (?, ?, ?, ?, ?, ?, ? ) ");
 		
 		PreparedStatement stat = null;
 		try {
 			stat = conn.prepareStatement(sql.toString());
 			stat.setString(1, obj.getCpf());
 			stat.setString(2, obj.getNome());
-			stat.setString(3, obj.getLogin());
-			stat.setString(4, obj.getSenha());
+			stat.setString(3, obj.getEmail());
+			if (obj.getDataNascimento() == null)
+				stat.setDate(4, null);
+			else
+				stat.setDate(4, Date.valueOf(obj.getDataNascimento())); 
+			stat.setString(5, obj.getLogin());
+			stat.setString(6, obj.getSenha());
+			
+			if (obj.getPerfil() != null)
+				stat.setInt(7, obj.getPerfil().getValue());
+			else 
+				stat.setObject(7, null);
 			
 			stat.execute();
 		} catch (SQLException e) {
@@ -49,6 +61,7 @@ public class UsuarioDAO implements DAO {
 		
 		if (deuErro)
 			return false;
+		
 		return true;
 	}
 
@@ -59,7 +72,13 @@ public class UsuarioDAO implements DAO {
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append("UPDATE usuario SET ");
-		sql.append(" cpf = ?, nome = ?, login = ?, senha = ? ");
+		sql.append(" cpf = ?, ");
+		sql.append(" nome = ?, ");
+		sql.append(" email = ?, ");
+		sql.append(" data_nascimento = ?, ");
+		sql.append(" login = ?, ");
+		sql.append(" senha = ?, ");
+		sql.append(" perfil = ? ");
 		sql.append("WHERE ");
 		sql.append(" id = ? ");
 	
@@ -68,13 +87,23 @@ public class UsuarioDAO implements DAO {
 			stat = conn.prepareStatement(sql.toString());
 			stat.setString(1, obj.getCpf());
 			stat.setString(2, obj.getNome());
-			stat.setString(3, obj.getLogin());
-			stat.setString(4, obj.getSenha());
+			stat.setString(3, obj.getEmail());
+			if (obj.getDataNascimento() == null)
+				stat.setDate(4, null);
+			else
+				stat.setDate(4, Date.valueOf(obj.getDataNascimento())); 
+			stat.setString(5, obj.getLogin());
+			stat.setString(6, obj.getSenha());
 			
-			stat.setInt(5, obj.getId());
+			if (obj.getPerfil() != null)
+				stat.setInt(7, obj.getPerfil().getValue());
+			else 
+				stat.setObject(7, null);
+			
+			stat.setInt(8, obj.getId());
 			
 			stat.execute();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			deuErro = true;
 		} finally {
@@ -97,7 +126,38 @@ public class UsuarioDAO implements DAO {
 
 	@Override
 	public boolean excluir(Integer id) {
-		return false;
+		Connection conn = DAO.getConnection();
+		boolean deuErro = false;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("DELETE FROM usuario WHERE id = ? ");
+		
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement(sql.toString());
+			stat.setInt(1, id);
+			
+			stat.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			deuErro = true;
+		} finally {
+			try {
+				stat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (deuErro)
+			return false;
+		
+		return true;
 	}
 
 	@Override
@@ -111,8 +171,11 @@ public class UsuarioDAO implements DAO {
 		sql.append("  u.id, ");
 		sql.append("  u.cpf, ");
 		sql.append("  u.nome, ");
+		sql.append("  u.email, ");
+		sql.append("  u.data_nascimento, ");
 		sql.append("  u.login, ");
-		sql.append("  u.senha ");
+		sql.append("  u.senha, ");
+		sql.append("  u.perfil ");
 		sql.append("FROM ");
 		sql.append("  usuario u ");
 		sql.append("ORDER BY u.nome ");
@@ -127,8 +190,12 @@ public class UsuarioDAO implements DAO {
 				usuario.setId(rs.getInt("id"));
 				usuario.setCpf(rs.getString("cpf"));
 				usuario.setNome(rs.getString("nome"));
+				usuario.setEmail(rs.getString("email"));
+				Date data = rs.getDate("data_nascimento");
+				usuario.setDataNascimento(data == null ? null : data.toLocalDate());
 				usuario.setLogin(rs.getString("login"));
 				usuario.setSenha(rs.getString("senha"));
+				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 				listaUsuario.add(usuario);
 			}
 		} catch (Exception e) {
@@ -164,8 +231,11 @@ public class UsuarioDAO implements DAO {
 		sql.append("  u.id, ");
 		sql.append("  u.cpf, ");
 		sql.append("  u.nome, ");
+		sql.append("  u.email, ");
+		sql.append("  u.data_nascimento, ");
 		sql.append("  u.login, ");
-		sql.append("  u.senha ");
+		sql.append("  u.senha, ");
+		sql.append("  u.perfil ");
 		sql.append("FROM ");
 		sql.append("  usuario u ");
 		sql.append("WHERE ");
@@ -183,8 +253,12 @@ public class UsuarioDAO implements DAO {
 				usuario.setId(rs.getInt("id"));
 				usuario.setCpf(rs.getString("cpf"));
 				usuario.setNome(rs.getString("nome"));
+				usuario.setEmail(rs.getString("email"));
+				Date data = rs.getDate("data_nascimento");
+				usuario.setDataNascimento(data == null ? null : data.toLocalDate());
 				usuario.setLogin(rs.getString("login"));
 				usuario.setSenha(rs.getString("senha"));
+				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

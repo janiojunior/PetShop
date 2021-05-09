@@ -5,15 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import br.unitins.petshop.model.Usuario;
-
-public interface DAO {
+public interface DAO<T> {
 	
-	public boolean inserir(Usuario obj);
-	public boolean alterar(Usuario obj);
+	public boolean inserir(T obj);
+	public boolean alterar(T obj);
 	public boolean excluir(Integer id);
-	public List<Usuario> obterTodos();
-	public Usuario obterUm(Integer id);
+	public List<T> obterTodos();
+	public T obterUm(Integer id);
 
 	public static Connection getConnection() {
 		// Registro do driver do postgresql

@@ -47,6 +47,7 @@
 			
 			<h:outputLabel value="Perfil: " />
 			<h:selectOneMenu value="#{usuarioController.usuario.perfil}">
+				<f:selectItem itemLabel="Selecione ..."/>
 				<f:selectItems value="#{usuarioController.listaPerfil}"
 							   var="obj" 
 							   itemLabel="#{obj.label}"/>
@@ -138,7 +139,7 @@
 					</h:commandButton>
 					<h:commandButton value="Excluir"
 						actionListener="#{usuarioController.excluir(obj)}">
-						<f:ajax execute="@this" render="@form:pgDataTable"/>
+						<f:ajax execute="@this" render="@form:pgDataTable @form:messages"/>
 					</h:commandButton>
 				</h:column>	
 			

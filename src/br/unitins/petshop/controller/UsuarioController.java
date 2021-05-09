@@ -1,10 +1,6 @@
 package br.unitins.petshop.controller;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +22,6 @@ public class UsuarioController implements Serializable{
 	private Usuario usuario = null;
 	private String confirmarSenha;
 	private List<Usuario> listaUsuario = null;
-	private int cont = 0;
 	private UIComponent uicCpf;
 	
 	public UIComponent getUicCpf() {
@@ -62,7 +57,7 @@ public class UsuarioController implements Serializable{
 			return;
 		}
 		
-		DAO dao = new UsuarioDAO();
+		DAO<Usuario> dao = new UsuarioDAO();
 		if (dao.inserir(getUsuario())) {
 			Util.addInfoMessage("Inclusão realizada com sucesso.");
 			limpar();
@@ -77,7 +72,7 @@ public class UsuarioController implements Serializable{
 			return;
 		}
 		
-		DAO dao = new UsuarioDAO();
+		DAO<Usuario> dao = new UsuarioDAO();
 		if (dao.alterar(getUsuario())) {
 			Util.addInfoMessage("Alteração realizada com sucesso.");
 			limpar();
@@ -86,19 +81,16 @@ public class UsuarioController implements Serializable{
 	}
 	
 	public void excluir() {
-//		int index = listaUsuario.indexOf(getUsuario());
-//		listaUsuario.remove(index);
-//		listaUsuario.remove(getUsuario());
 		excluir(getUsuario());
-		limpar();
-		// envio de mensagem para a interface 
-		Util.addInfoMessage("Exclusão realizada com sucesso");
 	}
 	
 	public void excluir(Usuario usu) {
-		System.out.println("Excluir");
-		listaUsuario.remove(usu);
-		System.out.println("Foi excluido o usuario do id: " + usu.getId());
+		DAO<Usuario> dao = new UsuarioDAO();
+		if (dao.excluir(usu.getId())) {
+			Util.addInfoMessage("Exclusão realizada com sucesso.");
+			limpar();
+		} else
+			Util.addErrorMessage("Problemas ao excluir no banco de dados.");
 	}
 	
 	public void limpar() {
@@ -108,13 +100,13 @@ public class UsuarioController implements Serializable{
 	}
 	
 	public void editar(Usuario usu) {
-		DAO dao = new UsuarioDAO();
+		DAO<Usuario> dao = new UsuarioDAO();
 		setUsuario(dao.obterUm(usu.getId()));
 	}
 	
 	public List<Usuario> getListaUsuario() {
 		if (listaUsuario == null) {
-			DAO dao = new UsuarioDAO();
+			DAO<Usuario> dao = new UsuarioDAO();
 			listaUsuario = dao.obterTodos();
 			if (listaUsuario == null)
 				listaUsuario = new ArrayList<Usuario>();
