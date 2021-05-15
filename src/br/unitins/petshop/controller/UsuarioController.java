@@ -58,6 +58,10 @@ public class UsuarioController implements Serializable{
 		}
 		
 		DAO<Usuario> dao = new UsuarioDAO();
+		
+		String hash = Util.hash(getUsuario().getSenha() + getUsuario().getLogin());
+		getUsuario().setSenha(hash);
+		
 		if (dao.inserir(getUsuario())) {
 			Util.addInfoMessage("Inclusão realizada com sucesso.");
 			limpar();

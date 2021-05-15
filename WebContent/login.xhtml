@@ -3,28 +3,53 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
-	<title>Login</title>
+	<title>EMidia</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+	<!-- Bootstrap CSS -->
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
+	<!-- Costumize CSS -->
+	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
-	<h1>Login</h1>
-	<h:form>
-		<h:messages id="messages" 
-				globalOnly="false"
-				errorStyle="color:red;margin:8px;"
-				infoStyle="color:green;margin:8px;"
-				warnStyle="color:yellow;margin:8px;" />
-		<h:panelGrid columns="2">
-			<h:outputLabel value="Usuário: " />
-			<h:inputText value="#{loginController.usuario}" />
-			<h:outputLabel value="Senha: " />
-			<h:inputText value="#{loginController.senha}" />
-	
-			<h:commandButton value="Entrar" 
-				action="#{loginController.entrar}"  />
-				
-			<h:commandButton value="Limpar" 
-				action="usuario.xhtml?faces-redirect=true"  />
-		</h:panelGrid>
-	</h:form>
+	<!-- Container -->
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-md-6 col-md-auto login-box">		
+	 			<h:messages styleClass="alert alert-danger hmessages"  />
+						
+				<h1 class="text-center wdi-red">Login</h1>
+				<hr />
+				<h:form>
+					<div class="form-row">
+						<div class="col-md-12">
+							<h:outputLabel style="margin-bottom:0;" value="Usuário:"  styleClass="wdi-red"/>
+							<h:inputText styleClass="form-control form-control-lg flat-input"
+								value="#{loginController.usuario.login}" />
+						</div>
+						<div class="col-md-12">
+							<h:outputLabel style="margin-bottom:0;" value="Senha:" styleClass="wdi-red"/>
+							<h:inputSecret
+								styleClass="form-control form-control-lg flat-input"
+								value="#{loginController.usuario.senha}" />
+						</div>
+						<h:commandButton value="Logar"
+							styleClass="btn btn-lg btn-block btn-login"
+							action="#{loginController.entrar()}" />
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="js/bootstrap.min.js"></script>
 </h:body>
 </html>

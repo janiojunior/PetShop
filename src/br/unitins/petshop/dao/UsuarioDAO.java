@@ -12,6 +12,67 @@ import br.unitins.petshop.model.Perfil;
 import br.unitins.petshop.model.Usuario;
 
 public class UsuarioDAO implements DAO<Usuario> {
+	
+	
+	public Usuario validarLogin(Usuario usuario) {
+		Connection conn = DAO.getConnection();
+		
+		Usuario usuarioLogado = null;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");
+		sql.append("  u.id, ");
+		sql.append("  u.cpf, ");
+		sql.append("  u.nome, ");
+		sql.append("  u.email, ");
+		sql.append("  u.data_nascimento, ");
+		sql.append("  u.login, ");
+		sql.append("  u.senha, ");
+		sql.append("  u.perfil ");
+		sql.append("FROM ");
+		sql.append("  usuario u ");
+		sql.append("WHERE ");
+		sql.append("  u.login = ? ");
+		sql.append("  AND u.senha = ? ");
+		
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement(sql.toString());
+			stat.setString(1, usuario.getLogin());
+			stat.setString(2, usuario.getSenha());
+			
+			ResultSet rs = stat.executeQuery();
+			
+			if(rs.next()) {
+				usuarioLogado = new Usuario();
+				usuarioLogado.setId(rs.getInt("id"));
+				usuarioLogado.setCpf(rs.getString("cpf"));
+				usuarioLogado.setNome(rs.getString("nome"));
+				usuarioLogado.setEmail(rs.getString("email"));
+				Date data = rs.getDate("data_nascimento");
+				usuarioLogado.setDataNascimento(data == null ? null : data.toLocalDate());
+				usuarioLogado.setLogin(rs.getString("login"));
+				usuarioLogado.setSenha(rs.getString("senha"));
+				usuarioLogado.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			usuarioLogado = null;
+		} finally {
+			try {
+				stat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return usuarioLogado;		
+	}
 
 	@Override
 	public boolean inserir(Usuario obj) {

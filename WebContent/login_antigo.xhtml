@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>Login</title>
+</h:head>
+<h:body>
+	<h1>Login</h1>
+	<h:form>
+		<h:messages id="messages" 
+				globalOnly="false"
+				errorStyle="color:red;margin:8px;"
+				infoStyle="color:green;margin:8px;"
+				warnStyle="color:yellow;margin:8px;" />
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Usuário: " />
+			<h:inputText value="#{loginController.usuario}" />
+			<h:outputLabel value="Senha: " />
+			<h:inputText value="#{loginController.senha}" />
+	
+			<h:commandButton value="Entrar" 
+				action="#{loginController.entrar}"  />
+				
+			<h:commandButton value="Limpar" 
+				action="usuario.xhtml?faces-redirect=true"  />
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

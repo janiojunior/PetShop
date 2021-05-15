@@ -4,45 +4,40 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import br.unitins.petshop.application.Util;
+import br.unitins.petshop.dao.UsuarioDAO;
+import br.unitins.petshop.model.Usuario;
 
 @Named
 @RequestScoped
 public class LoginController {
 
-	private String usuario = "Teste";
-	private String senha;
+	private Usuario usuario;
 	
 	public String entrar() {
-		System.out.println("Entrou no metodo entrar");
-		System.out.println(usuario);
-		System.out.println(senha);
-		if (usuario.equals("janio") && senha.equals("123"))
-			return "usuario.xhtml?faces-redirect=true";
-		
-		Util.addErrorMessage("Usuário ou Senha inválido.");
+		UsuarioDAO dao = new UsuarioDAO();
+		String hash = Util.hash(getUsuario().getSenha() + getUsuario().getLogin());
+		getUsuario().setSenha(hash);
+		Usuario usuarioLogado = dao.validarLogin(getUsuario());
+		if (usuarioLogado != null) {
+			return "usuario.xhtml";
+		}
+		Util.addErrorMessage("Login ou senha inválido.");
 		return null;
+		
 	}
 	
 	public void limpar() {
-		System.out.println("Entrou no metodo limpar");
-		usuario = "";
-		senha = "";
+		usuario = null;
 	}
 
-	public String getUsuario() {
+	public Usuario getUsuario() {
+		if (usuario == null)
+			usuario = new Usuario();
 		return usuario;
 	}
 
-	public void setUsuario(String usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 }

@@ -4,7 +4,9 @@ public class Produto {
 
 	private Integer id;
 	private String nome;
-	// definir 3 novos atributos
+	private String descricao;
+	private Double estoque;
+	private Double preco;
 
 	private Peso peso;
 
@@ -22,6 +24,30 @@ public class Produto {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Double getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(Double estoque) {
+		this.estoque = estoque;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
 
 	public Peso getPeso() {

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1"
+		http-equiv="X-UA-Conpatible" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="template.css"/>  
+</h:head>
+
+<h:body>
+	 <div class="wrapper">
+	 	<div class="box navbar header">
+			<h1 >.: Pet Shop :.</h1>
+			<div >
+				<h:form rendered="#{templateController.usuarioLogado != null}"> 
+					<h:outputLabel value="Olá #{templateController.usuarioLogado.nome}"/>
+					<h:commandLink value=" (Sair)"   
+						action="#{templateController.encerrarSessao}"
+						style="color:white"/>
+				</h:form>
+			</div>
+	 	</div>
+		<div class="box sidebar" style="text-align: center;">
+			<ui:insert name="menu">
+				<h1>Menu</h1>
+				<h:form>
+					<h:commandLink value="Login" action="/faces/login.xhtml?faces-redirect=true"/> <br/>
+					<h:commandLink value="Cadastro de Usuário" action="/faces/adm/usuario.xhtml?faces-redirect=true"/> <br/>
+					<h:commandLink value="Cadastro de Produto" action="/faces/adm/consultaproduto.xhtml?faces-redirect=true"/> <br/>
+					<h:commandLink value="Vendas" action="/faces/vendas.xhtml?faces-redirect=true"/> <br/>
+					<h:commandLink value="Carrinho" action="/faces/carrinho.xhtml?faces-redirect=true"/>  <br/>
+					<h:commandLink value="Histórico de Venda" action="/faces/historico.xhtml?faces-redirect=true"/>  <br/>
+						
+				</h:form>
+			</ui:insert>
+		</div>
+		<div class="box content">
+			<br/>
+			<ui:insert name="conteudo">
+				<div align="center">
+					<h1>TÓPICOS EM PROGRAMAÇÃO I</h1>
+				</div>
+			</ui:insert>
+		</div>
+		<div class="box footer" style="text-align: center;">
+			<h:outputText value="2021 - UNITINS - Todos os direitos reservados." />
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>Cadastro de Produto</title>
+</h:head>
+<h:body>
+	<h1>Cadastro de Produto</h1>
+	<h:form id="form1">
+		<h:messages id="messages" 
+					globalOnly="false"
+					errorStyle="color:red;margin:8px;"
+					infoStyle="color:green;margin:8px;"
+					warnStyle="color:yellow;margin:8px;" />
+		<h:panelGrid id="pgPrincipal" columns="2">
+		
+			<h:outputLabel value="Nome: " />
+			<h:inputText value="#{produtoController.produto.nome}"
+				 validatorMessage="O nome tem que possuir mais de 6 caracteres."
+				 required="true" requiredMessage="O nome deve ser preenchido.">
+				<f:validateLength minimum="6" />
+			</h:inputText>
+			
+			<h:outputLabel value="Descrição: " />
+			<h:inputText value="#{produtoController.produto.descricao}" />
+			
+			<h:outputLabel value="Estoque: " />
+			<h:inputText value="#{produtoController.produto.estoque}" />
+			
+			<h:outputLabel value="Preço: " />
+			<h:inputText value="#{produtoController.produto.preco}" />	
+			
+			<h:outputLabel value="Peso: " />
+			<h:inputText value="#{produtoController.produto.peso.valor}" />	
+			
+			<h:outputLabel value="Tipo do Peso: " />
+			<h:selectOneMenu value="#{produtoController.produto.peso.tipoPeso}">
+				<f:selectItem itemLabel="Selecione ..."/>
+				<f:selectItems value="#{produtoController.listaTipoPeso}"
+							   var="obj" 
+							   itemLabel="#{obj.label}"/>
+			</h:selectOneMenu>
+	
+		</h:panelGrid>
+		
+		<h:panelGrid id="pgBotoes" columns="4">
+			<h:commandButton value="Incluir" 
+				disabled="#{produtoController.produto.id != null}"
+				actionListener="#{produtoController.incluir}">
+				<f:ajax execute="@this pgPrincipal" render="@form" />
+			</h:commandButton>
+				
+			<h:commandButton value="Alterar" 
+				disabled="#{produtoController.produto.id == null}"
+				actionListener="#{produtoController.alterar}"  >
+				<f:ajax execute="@this pgPrincipal" render="@form" />
+			</h:commandButton>
+
+			<h:commandButton value="Excluir" 
+				disabled="#{produtoController.produto.id == null}"
+				actionListener="#{produtoController.excluir}" >
+				<f:ajax execute="@this" render="@form" />
+			</h:commandButton>
+				
+			<h:commandButton value="Limpar" 
+				actionListener="#{produtoController.limpar}">
+				<f:ajax execute="@this" render="pgPrincipal messages pgBotoes" />
+			</h:commandButton>
+		</h:panelGrid>
+		
+		<h:panelGroup id="pgDataTable">
+			<h:dataTable 
+				id="dataTable"
+				value="#{produtoController.listaProduto}"
+				var="obj">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					<h:outputLabel value="#{obj.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputLabel value="#{obj.nome}" />
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Descrição</f:facet>
+					<h:outputLabel value="#{obj.descricao}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Estoque</f:facet>
+					<h:outputLabel value="#{obj.estoque}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Preço</f:facet>
+					<h:outputLabel value="#{obj.preco}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Peso</f:facet>
+					<h:outputLabel value="#{obj.peso.valor}" />
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Tipo do Peso</f:facet>
+					<h:outputLabel value="#{obj.peso.tipoPeso.label}" />
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Ação</f:facet>
+					<h:commandButton value="Editar"
+						actionListener="#{produtoController.editar(obj)}">
+						<f:ajax execute="@this" render="@form"/>
+					</h:commandButton>
+					<h:commandButton value="Excluir"
+						actionListener="#{produtoController.excluir(obj)}">
+						<f:ajax execute="@this" render="@form:pgDataTable @form:messages"/>
+					</h:commandButton>
+				</h:column>	
+			
+			</h:dataTable>
+		</h:panelGroup>
+	</h:form>
+</h:body>
+</html>
