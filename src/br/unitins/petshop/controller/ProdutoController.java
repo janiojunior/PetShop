@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -21,6 +23,12 @@ public class ProdutoController implements Serializable {
 	private static final long serialVersionUID = 4153068272054439450L;
 	private Produto produto = null;
 	private List<Produto> listaProduto = null;
+	
+	public ProdutoController() {
+		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+		flash.keep("produtoFlash");
+		setProduto((Produto)flash.get("produtoFlash"));
+	}
 	
 	public TipoPeso[] getListaTipoPeso() {
 		return TipoPeso.values();

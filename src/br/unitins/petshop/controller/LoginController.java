@@ -1,8 +1,11 @@
 package br.unitins.petshop.controller;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import br.unitins.petshop.application.Session;
 import br.unitins.petshop.application.Util;
 import br.unitins.petshop.dao.UsuarioDAO;
 import br.unitins.petshop.model.Usuario;
@@ -19,7 +22,14 @@ public class LoginController {
 		getUsuario().setSenha(hash);
 		Usuario usuarioLogado = dao.validarLogin(getUsuario());
 		if (usuarioLogado != null) {
-			return "usuario.xhtml";
+			//Adicionar na sessao o objeto usuarioLogado
+//			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+//			context.getSessionMap().put("usuarioLogado", usuarioLogado);
+			Session.getInstance().set("usuarioLogado", usuarioLogado);
+			
+			// redirecionando para o template
+			return "template.xhtml";
+			
 		}
 		Util.addErrorMessage("Login ou senha inválido.");
 		return null;

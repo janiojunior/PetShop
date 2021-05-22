@@ -76,6 +76,9 @@ public class UsuarioController implements Serializable{
 			return;
 		}
 		
+		String hash = Util.hash(getUsuario().getSenha() + getUsuario().getLogin());
+		getUsuario().setSenha(hash);
+		
 		DAO<Usuario> dao = new UsuarioDAO();
 		if (dao.alterar(getUsuario())) {
 			Util.addInfoMessage("Alteração realizada com sucesso.");
