@@ -7,71 +7,77 @@
 	
 <ui:composition template="/template.xhtml">
 <ui:define name="conteudo">
-	
-	<h1>Cadastro de Produto</h1>
-	<h:form id="form1">
-		<h:messages id="messages" 
-					globalOnly="false"
-					errorStyle="color:red;margin:8px;"
-					infoStyle="color:green;margin:8px;"
-					warnStyle="color:yellow;margin:8px;" />
-		<h:panelGrid id="pgPrincipal" columns="2">
-		
-			<h:outputLabel value="Nome: " />
-			<h:inputText value="#{produtoController.produto.nome}"
-				 validatorMessage="O nome tem que possuir mais de 6 caracteres."
-				 required="true" requiredMessage="O nome deve ser preenchido.">
-				<f:validateLength minimum="6" />
-			</h:inputText>
-			
-			<h:outputLabel value="Descrição: " />
-			<h:inputText value="#{produtoController.produto.descricao}" />
-			
-			<h:outputLabel value="Estoque: " />
-			<h:inputText value="#{produtoController.produto.estoque}" />
-			
-			<h:outputLabel value="Preço: " />
-			<h:inputText value="#{produtoController.produto.preco}" />	
-			
-			<h:outputLabel value="Peso: " />
-			<h:inputText value="#{produtoController.produto.peso.valor}" />	
-			
-			<h:outputLabel value="Tipo do Peso: " />
-			<h:selectOneMenu value="#{produtoController.produto.peso.tipoPeso}">
-				<f:selectItem itemLabel="Selecione ..."/>
-				<f:selectItems value="#{produtoController.listaTipoPeso}"
-							   var="obj" 
-							   itemLabel="#{obj.label}"/>
-			</h:selectOneMenu>
-	
-		</h:panelGrid>
-		
-		<h:panelGrid id="pgBotoes" columns="4">
-			<h:commandButton value="Incluir" 
-				rendered="#{produtoController.produto.id == null}"
-				actionListener="#{produtoController.incluir}">
-				<f:ajax execute="@this pgPrincipal" render="@form" />
-			</h:commandButton>
+	<!-- Container -->
+	<div class="container-fluid">
+		<div class="row justify-content-md-center">
+			<div class="col-md-6 col-md-auto login-box">		
+				<h1>Cadastro de Produto</h1>
+				<h:form id="form1">
+					<h:messages id="messages" 
+								globalOnly="false"
+								errorStyle="color:red;margin:8px;"
+								infoStyle="color:green;margin:8px;"
+								warnStyle="color:yellow;margin:8px;" />
+					<h:panelGrid id="pgPrincipal" columns="2">
+					
+						<h:outputLabel value="Nome: " />
+						<h:inputText value="#{produtoController.produto.nome}"
+							 validatorMessage="O nome tem que possuir mais de 6 caracteres."
+							 required="true" requiredMessage="O nome deve ser preenchido.">
+							<f:validateLength minimum="6" />
+						</h:inputText>
+						
+						<h:outputLabel value="Descrição: " />
+						<h:inputText value="#{produtoController.produto.descricao}" />
+						
+						<h:outputLabel value="Estoque: " />
+						<h:inputText value="#{produtoController.produto.estoque}" />
+						
+						<h:outputLabel value="Preço: " />
+						<h:inputText value="#{produtoController.produto.preco}" />	
+						
+						<h:outputLabel value="Peso: " />
+						<h:inputText value="#{produtoController.produto.peso.valor}" />	
+						
+						<h:outputLabel value="Tipo do Peso: " />
+						<h:selectOneMenu value="#{produtoController.produto.peso.tipoPeso}">
+							<f:selectItem itemLabel="Selecione ..."/>
+							<f:selectItems value="#{produtoController.listaTipoPeso}"
+										   var="obj" 
+										   itemLabel="#{obj.label}"/>
+						</h:selectOneMenu>
 				
-			<h:commandButton value="Alterar" 
-				rendered="#{produtoController.produto.id != null}"
-				actionListener="#{produtoController.alterar}"  >
-				<f:ajax execute="@this pgPrincipal" render="@form" />
-			</h:commandButton>
-
-			<h:commandButton value="Excluir" 
-				rendered="#{produtoController.produto.id != null}"
-				actionListener="#{produtoController.excluir}" >
-				<f:ajax execute="@this" render="@form" />
-			</h:commandButton>
-				
-			<h:commandButton value="Limpar" 
-				actionListener="#{produtoController.limpar}">
-				<f:ajax execute="@this" render="pgPrincipal messages pgBotoes" />
-			</h:commandButton>
-		</h:panelGrid>
-		
-	</h:form>
+					</h:panelGrid>
+					
+					<h:panelGrid id="pgBotoes" columns="4">
+						<h:commandButton value="Incluir" 
+							rendered="#{produtoController.produto.id == null}"
+							actionListener="#{produtoController.incluir}">
+							<f:ajax execute="@this pgPrincipal" render="@form" />
+						</h:commandButton>
+							
+						<h:commandButton value="Alterar" 
+							rendered="#{produtoController.produto.id != null}"
+							actionListener="#{produtoController.alterar}"  >
+							<f:ajax execute="@this pgPrincipal" render="@form" />
+						</h:commandButton>
+			
+						<h:commandButton value="Excluir" 
+							rendered="#{produtoController.produto.id != null}"
+							actionListener="#{produtoController.excluir}" >
+							<f:ajax execute="@this" render="@form" />
+						</h:commandButton>
+							
+						<h:commandButton value="Limpar" 
+							actionListener="#{produtoController.limpar}">
+							<f:ajax execute="@this" render="pgPrincipal messages pgBotoes" />
+						</h:commandButton>
+					</h:panelGrid>
+					
+				</h:form>
+			</div>
+		</div>
+	</div>
 </ui:define>
 </ui:composition>
 </html>

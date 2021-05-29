@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="template.xhtml">
+<ui:define name="conteudo">
+
+	<h:messages 
+		errorStyle="color:red" 
+		warnStyle="color:orange" 
+		infoStyle="color:green"
+		globalOnly="false"/>
+		
+	<!-- Container -->
+	<div class="container-fluid">
+		<div class="row justify-content-md-center">
+			<div class="col-md-6 col-md-auto login-box">		
+	 			<h:messages styleClass="alert alert-danger hmessages"  />
+				<div class="form-row">
+				 	<div class="form-group col-md-12">
+				 		<h1 class="text-center wdi-red">Histórico de Vendas</h1>
+				    </div>
+				</div>		
+				<h:form id="formDataTable">
+					<h:dataTable id="dataTable" 
+								class="table table-striped table-hover"
+								value="#{historicoController.listaVenda}"  
+							 	var="obj">
+						<h:column>
+							<f:facet name="header">Data</f:facet>
+							<h:outputLabel value="#{obj.data}">
+								<f:convertDateTime type="localDate" pattern="dd-MM-yyyy"/>
+							</h:outputLabel>
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Usuario</f:facet>
+							<h:outputLabel value="#{obj.usuario.nome}"/>
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Total da Venda</f:facet>
+							<h:outputLabel value="#{obj.totalVenda}">
+								<f:convertNumber  locale="pt_BR" currencySymbol="R$" type="currency"/>
+							</h:outputLabel>
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Ação</f:facet>
+							<h:commandButton value="Detalhes ..." action="#{historicoController.detalhes(obj)}">
+								<f:ajax execute="@this" render="@none"/>
+							</h:commandButton>
+						</h:column>		
+					</h:dataTable>
+					
+				</h:form>
+			</div>
+		</div>
+	</div>
+
+</ui:define>
+</ui:composition>	
+	
+</html>

@@ -210,6 +210,140 @@ public class ProdutoDAO implements DAO<Produto> {
 		
 		return listaProduto;
 	}
+	
+
+	public List<Produto> obterPeloNome(String nome) {
+		Connection conn = DAO.getConnection();
+		
+		List<Produto> listaProduto = new ArrayList<Produto>();
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");
+		sql.append("  p.id, ");
+		sql.append("  p.nome, ");
+		sql.append("  p.descricao, ");
+		sql.append("  p.estoque, ");
+		sql.append("  p.preco, ");
+		sql.append("  pe.id AS id_peso, ");
+		sql.append("  pe.valor, ");
+		sql.append("  pe.tipopeso ");
+		sql.append("FROM ");
+		sql.append("  produto p, ");
+		sql.append("  peso pe ");
+		sql.append("WHERE ");
+		sql.append("  p.id = pe.id ");
+		sql.append("  AND p.nome ILIKE ? ");
+		sql.append("ORDER BY p.nome ");
+		
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement(sql.toString());
+			stat.setString(1, "%"+nome+"%");
+			ResultSet rs = stat.executeQuery();
+			
+			while(rs.next()) {
+				Produto produto = new Produto();
+				produto.setId(rs.getInt("id"));
+				produto.setNome(rs.getString("nome"));
+				produto.setDescricao(rs.getString("descricao"));
+				produto.setEstoque(rs.getDouble("estoque"));
+				produto.setPreco(rs.getDouble("preco"));
+				
+				produto.setPeso(new Peso());
+				produto.getPeso().setId(rs.getInt("id_peso"));
+				produto.getPeso().setValor(rs.getDouble("valor"));
+				produto.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				
+				listaProduto.add(produto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			listaProduto = null;
+		} finally {
+			try {
+				stat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (listaProduto == null || listaProduto.isEmpty())
+			return null;
+		
+		return listaProduto;
+	}
+	
+	public List<Produto> obterPelaDescricao(String descricao) {
+		Connection conn = DAO.getConnection();
+		
+		List<Produto> listaProduto = new ArrayList<Produto>();
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");
+		sql.append("  p.id, ");
+		sql.append("  p.nome, ");
+		sql.append("  p.descricao, ");
+		sql.append("  p.estoque, ");
+		sql.append("  p.preco, ");
+		sql.append("  pe.id AS id_peso, ");
+		sql.append("  pe.valor, ");
+		sql.append("  pe.tipopeso ");
+		sql.append("FROM ");
+		sql.append("  produto p, ");
+		sql.append("  peso pe ");
+		sql.append("WHERE ");
+		sql.append("  p.id = pe.id ");
+		sql.append("  AND p.descricao ILIKE ? ");
+		sql.append("ORDER BY p.nome ");
+		
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement(sql.toString());
+			stat.setString(1, "%"+descricao+"%");
+			ResultSet rs = stat.executeQuery();
+			
+			while(rs.next()) {
+				Produto produto = new Produto();
+				produto.setId(rs.getInt("id"));
+				produto.setNome(rs.getString("nome"));
+				produto.setDescricao(rs.getString("descricao"));
+				produto.setEstoque(rs.getDouble("estoque"));
+				produto.setPreco(rs.getDouble("preco"));
+				
+				produto.setPeso(new Peso());
+				produto.getPeso().setId(rs.getInt("id_peso"));
+				produto.getPeso().setValor(rs.getDouble("valor"));
+				produto.getPeso().setTipoPeso(TipoPeso.valueOf(rs.getInt("tipopeso")));
+				
+				listaProduto.add(produto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			listaProduto = null;
+		} finally {
+			try {
+				stat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (listaProduto == null || listaProduto.isEmpty())
+			return null;
+		
+		return listaProduto;
+	}
+
 
 	@Override
 	public Produto obterUm(Integer id) {
