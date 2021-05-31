@@ -1,0 +1,59 @@
+@startuml
+
+class Usuario {
+    - id: Integer
+    - nome: String
+    - cpf: String
+    - dataNasciento: Date
+    - email: String
+    - login: String
+    - senha: String
+}
+
+enum Perfil {
+   + ADMINISTRADOR: int
+   + CLIENTE: int
+   + FUNCIONARIO: int
+}
+
+class Produto {
+    - id: Integer
+    - nome: String
+    - descricao: String
+    - estoque: Double
+    - preco: Double
+}
+
+class Peso {
+    - id: Integer
+    - valor: Double
+}
+
+enum TipoPeso {
+    + KG: int
+    + GRAMA: int
+    + LIBRA: int
+    + MILIGRAMA: int    
+}
+
+class Venda {
+    - id: Integer
+    - data: Date
+    - totalVenda: Double
+}
+
+class ItemVenda {
+    - id: Integer
+    - quantidade: Integer
+    - valor: Double
+}
+
+
+ItemVenda "*" --> "1" Produto
+Venda "1" *--> "*" ItemVenda
+Venda "*" --> "1" Usuario
+Usuario "*" --> "1" Perfil
+Produto "1" *--> "1" Peso
+Peso "*" --> "1" TipoPeso
+
+@enduml
