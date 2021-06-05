@@ -1,11 +1,12 @@
 package br.unitins.petshop.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Venda {
 	private Integer id;
-	private LocalDateTime data;
+	private LocalDate data;
 	private Double totalVenda;
 	private Usuario usuario;
 	private List<ItemVenda> listaItemVenda;
@@ -18,11 +19,11 @@ public class Venda {
 		this.id = id;
 	}
 
-	public LocalDateTime getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(LocalDateTime data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 

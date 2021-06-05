@@ -43,12 +43,12 @@
 						<h:dataTable value="#{detalheVendaController.venda.listaItemVenda}" var="obj" styleClass="table table-striped table-hover">>
 							<h:column>
 								<f:facet name="header">Nome</f:facet>
-								<h:outputLabel value="#{obj.midia.nome}" />
+								<h:outputLabel value="#{obj.produto.nome}" />
 							</h:column>
 							
 							<h:column>
 								<f:facet name="header">Valor</f:facet>
-								<h:outputLabel value="#{obj.preco}">
+								<h:outputLabel value="#{obj.valorUnitario}">
 									<f:convertNumber  locale="pt_BR" currencySymbol="R$" type="currency"/>
 								</h:outputLabel>
 							</h:column>
@@ -59,7 +59,7 @@
 						<h:commandButton value="Voltar" 
 							class="btn btn-primary"
 							onclick="history.go(-1); return false;"  />
-					</div>
+					</div>		
 				</h:form>
 			</div>
 		</div>

@@ -1,5 +1,7 @@
 package br.unitins.petshop.application;
 
+import java.io.IOException;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
@@ -37,6 +39,14 @@ public class Util {
 		FacesContext.getCurrentInstance().
 		addMessage(clientId, 
 				new FacesMessage(severity, msg, null));
+	}
+	
+	public static void redirect(String page) {
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect(page);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
