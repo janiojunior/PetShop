@@ -9,12 +9,9 @@ import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.unitins.petshop.application.Util;
 import br.unitins.petshop.dao.DAO;
 import br.unitins.petshop.dao.ProdutoDAO;
-import br.unitins.petshop.model.Peso;
 import br.unitins.petshop.model.Produto;
-import br.unitins.petshop.model.TipoPeso;
 
 @Named
 @ViewScoped

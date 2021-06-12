@@ -1,6 +1,5 @@
 package br.unitins.petshop.controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
